@@ -67,9 +67,6 @@ return {
 			end,
 		})
 
-		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = cmp_nvim_lsp.default_capabilities()
-
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
 		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
@@ -77,6 +74,10 @@ return {
 			local hl = "DiagnosticSign" .. type
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
+
+		-- used to enable autocompletion (assign to every lsp server config)
+		local capabilities = cmp_nvim_lsp.default_capabilities()
+		local util = require("lspconfig.util")
 
 		mason_lspconfig.setup_handlers({
 			-- default handler for installed servers
@@ -98,6 +99,29 @@ return {
 							completion = {
 								callSnippet = "Replace",
 							},
+						},
+					},
+				})
+			end,
+			["gopls"] = function()
+				-- configure lua server (with special settings)
+				lspconfig["gopls"].setup({
+					capabilities = capabilities,
+					cmd = { "gopls" },
+					filetypes = { "go", "gomod", "gowork", "goimpl" },
+					rootdir = util.root_pattern("go.work", "go.mod", ".git"),
+					settings = {
+						gopls = {
+							completeUnimported = true,
+							usePlaceholders = true,
+							analysis = {
+								unusedparams = true,
+							},
+							completion = {
+								callSnippet = "Replace",
+							},
+							staticcheck = true,
+							gofumpt = true,
 						},
 					},
 				})
