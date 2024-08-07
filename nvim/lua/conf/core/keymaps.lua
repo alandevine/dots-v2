@@ -16,3 +16,4 @@ keymap.set("n", "<leader>tp", "<cmd>tabp<CR>")
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>")
 
 keymap.set("n", "<leader>tt", "<cmd>ToggleTerm dir=. direction=float name=1<CR>")
+keymap.set("n", "<leader>tv", "<cmd>ToggleTerm dir=. direction=vertical name=1<CR>")
